@@ -2,32 +2,26 @@
 // Route Post /api/admin/register
 
 const Admin = require('../../model/Staff/Admin')
+const AsyncHandler = require('express-async-handler')
 
 // Access private
-exports.registerAdminController = async (req, res) => {
+exports.registerAdminController = AsyncHandler(async (req, res) => {
   const { name, email, password } = req.body
-  try {
-    // if email exist
-    const adminFound = await Admin.findOne({ email })
-    if (adminFound) {
-      res.json('Admin Exists')
-    }
-    const user = await Admin.create({
-      name,
-      email,
-      password,
-    })
-    res.status(201).json({
-      status: 'success',
-      data: user,
-    })
-  } catch (error) {
-    res.status(201).json({
-      status: 'failed',
-      data: 'Adin bas been failed',
-    })
+  // if email exist
+  const adminFound = await Admin.findOne({ email })
+  if (adminFound) {
+    throw new Error('Admin exists')
   }
-}
+  const user = await Admin.create({
+    name,
+    email,
+    password,
+  })
+  res.status(201).json({
+    status: 'success',
+    data: user,
+  })
+})
 
 exports.loginAdminController = async (req, res) => {
   const { email, password } = req.body
