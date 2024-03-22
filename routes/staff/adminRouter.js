@@ -19,7 +19,7 @@ const adminRouter = express.Router()
 
 adminRouter.post('/register', registerAdminController)
 adminRouter.post('/login', loginAdminController)
-adminRouter.get('/all', getAllAdminController)
+adminRouter.get('/all', isLogin, getAllAdminController)
 adminRouter.get('/', isLogin, getSingleAdminController)
 adminRouter.put('/:id', updateAdminController)
 adminRouter.delete('/:id', deleteAdminController)

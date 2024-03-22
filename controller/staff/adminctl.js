@@ -46,19 +46,14 @@ exports.loginAdminController = AsyncHandler(async (req, res) => {
   }
 })
 
-exports.getAllAdminController = (req, res) => {
-  try {
-    res.status(201).json({
-      status: 'success',
-      data: 'All admins',
-    })
-  } catch (error) {
-    res.status(201).json({
-      status: 'failed',
-      data: 'all admin failed',
-    })
-  }
-}
+exports.getAllAdminController = AsyncHandler(async (req, res) => {
+  const admins = await Admin.find()
+  res.status(200).json({
+    status: 'success',
+    message: 'Admin fetched successfully',
+    data: admins,
+  })
+})
 
 exports.getSingleAdminController = AsyncHandler(async (req, res) => {
   const admin = await Admin.findById(req.userAuth._id).select('-password')
