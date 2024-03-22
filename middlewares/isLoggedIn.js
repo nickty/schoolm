@@ -6,7 +6,6 @@ const isLogin = async (req, res, next) => {
     // Get token from header
     const headerObj = req.headers
     const token = headerObj?.authorization?.split(' ')[1]
-    console.log('working?', headerObj)
 
     if (!token) {
       throw new Error('No token provided')
@@ -23,7 +22,6 @@ const isLogin = async (req, res, next) => {
     const user = await Admin.findById(verifiedToken.id).select(
       'name email role'
     )
-    console.log('working?', user)
 
     if (user) {
       // Save the user into req object

@@ -68,19 +68,29 @@ exports.getSingleAdminController = AsyncHandler(async (req, res) => {
   }
 })
 
-exports.updateAdminController = (req, res) => {
-  try {
-    res.status(201).json({
+exports.updateAdminController = AsyncHandler(async (req, res) => {
+  const { name, email, password } = req.body
+  const adminFound = await Admin.findById(req.userAuth._id)
+  const emailExist = await Admin.findOne({ email })
+  if (emailExist) {
+    throw new Error('This email is taken/exist')
+  } else {
+    const admin = await Admin.findByIdAndUpdate(
+      req.userAuth._id,
+      {
+        email,
+        password,
+        name,
+      },
+      { new: true, runValidators: true }
+    )
+    res.status(200).json({
       status: 'success',
-      data: 'Update admin',
-    })
-  } catch (error) {
-    res.status(201).json({
-      status: 'failed',
-      data: 'update admin failed',
+      data: admin,
+      message: 'Admin updated successfully',
     })
   }
-}
+})
 
 exports.deleteAdminController = (req, res) => {
   try {
