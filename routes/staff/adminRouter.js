@@ -13,13 +13,14 @@ const {
   publishExamController,
   unPublishExamController,
 } = require('../../controller/staff/adminctl')
+const isLogin = require('../../middlewares/isLoggedIn')
 
 const adminRouter = express.Router()
 
 adminRouter.post('/register', registerAdminController)
 adminRouter.post('/login', loginAdminController)
 adminRouter.get('/all', getAllAdminController)
-adminRouter.get('/:id', getSingleAdminController)
+adminRouter.get('/:id', isLogin, getSingleAdminController)
 adminRouter.put('/:id', updateAdminController)
 adminRouter.delete('/:id', deleteAdminController)
 adminRouter.put('/suspend/teacher/:id', suspendTeacherController)

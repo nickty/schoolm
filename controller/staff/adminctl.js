@@ -3,6 +3,8 @@
 
 const Admin = require('../../model/Staff/Admin')
 const AsyncHandler = require('express-async-handler')
+const generateToken = require('../../utils/generateToken')
+const verifyToken = require('../../utils/verifyToken')
 
 // Access private
 exports.registerAdminController = AsyncHandler(async (req, res) => {
@@ -23,26 +25,22 @@ exports.registerAdminController = AsyncHandler(async (req, res) => {
   })
 })
 
-exports.loginAdminController = async (req, res) => {
+exports.loginAdminController = AsyncHandler(async (req, res) => {
   const { email, password } = req.body
-  try {
-    // find user
-    const user = await Admin.findOne({ email })
-    if (!user) {
-      return res.json({ message: 'Invalid login credentials' })
-    }
-    if (user && (await user.verifyPassword(password))) {
-      return res.json({ data: user })
-    } else {
-      return res.json({ message: 'Invalid login credentials' })
-    }
-  } catch (error) {
-    res.status(201).json({
-      status: 'failed',
-      data: 'admin logged in failed',
-    })
+
+  // find user
+  const user = await Admin.findOne({ email })
+  if (!user) {
+    return res.json({ message: 'Invalid login credentials' })
   }
-}
+  if (user && (await user.verifyPassword(password))) {
+    const token = generateToken(user._id)
+    const verify = verifyToken(token)
+    return res.json({ data: generateToken(user._id), user, verify })
+  } else {
+    return res.json({ message: 'Invalid login credentials' })
+  }
+})
 
 exports.getAllAdminController = (req, res) => {
   try {
@@ -59,6 +57,7 @@ exports.getAllAdminController = (req, res) => {
 }
 
 exports.getSingleAdminController = (req, res) => {
+  console.log('ehcek auth', req.userAuth)
   try {
     res.status(201).json({
       status: 'success',
