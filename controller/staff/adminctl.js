@@ -22,6 +22,7 @@ exports.registerAdminController = AsyncHandler(async (req, res) => {
   res.status(201).json({
     status: 'success',
     data: user,
+    message: 'Admin registered sucessfully',
   })
 })
 
@@ -36,7 +37,10 @@ exports.loginAdminController = AsyncHandler(async (req, res) => {
   if (user && (await user.verifyPassword(password))) {
     const token = generateToken(user._id)
     const verify = verifyToken(token)
-    return res.json({ data: generateToken(user._id), user, verify })
+    return res.json({
+      data: generateToken(user._id),
+      message: 'Admin logged in successfully',
+    })
   } else {
     return res.json({ message: 'Invalid login credentials' })
   }
@@ -64,6 +68,7 @@ exports.getSingleAdminController = AsyncHandler(async (req, res) => {
     res.status(200).json({
       status: 'success',
       data: admin,
+      message: 'Admin profile fetched successfully',
     })
   }
 })
