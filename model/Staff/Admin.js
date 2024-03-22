@@ -56,12 +56,19 @@ const adminSchema = new mongoose.Schema(
 // hash password
 adminSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
-    next()
+    // If password is not modified, move to the next middleware
+    return next()
   }
-  // salt
-  const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
-  next()
+
+  try {
+    // Generate salt
+    const salt = await bcrypt.genSalt(10)
+    // Hash the password with the generated salt
+    this.password = await bcrypt.hash(this.password, salt)
+    next() // Move to the next middleware
+  } catch (error) {
+    next(error) // Pass any error to the next middleware
+  }
 })
 
 // verify password
