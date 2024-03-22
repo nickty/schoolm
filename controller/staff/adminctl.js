@@ -56,20 +56,17 @@ exports.getAllAdminController = (req, res) => {
   }
 }
 
-exports.getSingleAdminController = (req, res) => {
-  console.log('ehcek auth', req.userAuth)
-  try {
-    res.status(201).json({
+exports.getSingleAdminController = AsyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.userAuth._id).select('-password')
+  if (!admin) {
+    throw new Error('Admin not found')
+  } else {
+    res.status(200).json({
       status: 'success',
-      data: 'Single admins',
-    })
-  } catch (error) {
-    res.status(201).json({
-      status: 'failed',
-      data: 'falid single',
+      data: admin,
     })
   }
-}
+})
 
 exports.updateAdminController = (req, res) => {
   try {
