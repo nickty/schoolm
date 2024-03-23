@@ -1,5 +1,6 @@
 const AsyncHandler = require('express-async-handler')
 const AcademicYear = require('../../model/Academic/AcademicYear')
+const Admin = require('../../model/Staff/Admin')
 
 exports.createAcademicYear = AsyncHandler(async (req, res) => {
   const { name, fromYear, toYear } = req.body
@@ -15,6 +16,10 @@ exports.createAcademicYear = AsyncHandler(async (req, res) => {
     toYear,
     createdBy: req.userAuth._id,
   })
+  //   push acadmic year to adin
+  const admin = await Admin.findById(req.userAuth._id)
+  admin.academicYear.push(academicYearCreated._id)
+  admin.save()
   res.status(201).json({
     status: 'sucess',
     message: 'Academic year created successfully',

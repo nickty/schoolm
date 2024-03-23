@@ -56,7 +56,9 @@ exports.getAllAdminController = AsyncHandler(async (req, res) => {
 })
 
 exports.getSingleAdminController = AsyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.userAuth._id).select('-password')
+  const admin = await Admin.findById(req.userAuth._id)
+    .select('-password')
+    .populate('academicYear')
   if (!admin) {
     throw new Error('Admin not found')
   } else {

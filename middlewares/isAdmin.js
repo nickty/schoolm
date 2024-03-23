@@ -1,7 +1,7 @@
 const Admin = require('../model/Staff/Admin')
 
 const isAdmin = async (req, res, next) => {
-  const userId = req.userAuth._id
+  const userId = req?.userAuth?._id
   const adminFound = await Admin.findById(userId)
 
   if (adminFound?.role === 'admin') {
