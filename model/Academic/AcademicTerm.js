@@ -8,7 +8,7 @@ const academicTermSchema = new Schema(
       type: String,
       required: true,
     },
-    decription: {
+    description: {
       type: String,
       required: true,
     },
