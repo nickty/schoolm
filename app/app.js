@@ -7,6 +7,7 @@ const {
 } = require('../middlewares/globalErrorHandler')
 const academicYearRouter = require('../routes/academics/academicYear')
 const academicTermRouter = require('../routes/academics/academicTerm')
+const classLevelRouter = require('../routes/academics/classLevel')
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use('/api/v1/admin', adminRouter)
 app.use('/api/v1/academic-years', academicYearRouter)
 app.use('/api/v1/academic-terms', academicTermRouter)
+app.use('/api/v1/class-levels', classLevelRouter)
 
 // Error
 app.use(notFoundErr)
