@@ -31,3 +31,13 @@ exports.getAcademicYears = AsyncHandler(async (req, res) => {
     data: academicYears,
   })
 })
+
+// get single
+exports.getAcademicYear = AsyncHandler(async (req, res) => {
+  const academicYear = await AcademicYear.findById(req.params.id)
+  res.status(201).json({
+    status: 'sucess',
+    message: 'Academic year fetched successfully',
+    data: academicYear,
+  })
+})
