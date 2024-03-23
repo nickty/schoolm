@@ -60,3 +60,12 @@ exports.updateAcademicYear = AsyncHandler(async (req, res) => {
     data: academicYear,
   })
 })
+
+// delete one
+exports.deleteAcademicYear = AsyncHandler(async (req, res) => {
+  await AcademicYear.findByIdAndDelete(req.params.id)
+  res.status(201).json({
+    status: 'sucess',
+    message: 'Academic year deleted successfully',
+  })
+})
