@@ -41,3 +41,22 @@ exports.getAcademicYear = AsyncHandler(async (req, res) => {
     data: academicYear,
   })
 })
+
+// get single
+exports.updateAcademicYear = AsyncHandler(async (req, res) => {
+  const { name, fromYear, toYear } = req.body
+  const academicYearFound = await AcademicYear.findOne({ name })
+  if (academicYearFound) {
+    throw new Error('Academic year already exist')
+  }
+  const academicYear = await AcademicYear.findByIdAndUpdate(
+    req.params.id,
+    { name, fromYear, toYear, createdBy: req.userAuth._id },
+    { new: true }
+  )
+  res.status(201).json({
+    status: 'sucess',
+    message: 'Academic year updated successfully',
+    data: academicYear,
+  })
+})
