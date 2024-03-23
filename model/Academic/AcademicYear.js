@@ -41,6 +41,6 @@ const academicYearSchema = new Schema(
   { timestamps: true }
 )
 
-const AcademicYear = mongoose.model('AcademicYear', subjectSchema)
+const AcademicYear = mongoose.model('AcademicYear', academicYearSchema)
 
 module.exports = AcademicYear
