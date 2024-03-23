@@ -21,3 +21,13 @@ exports.createAcademicYear = AsyncHandler(async (req, res) => {
     data: academicYearCreated,
   })
 })
+
+// get all
+exports.getAcademicYears = AsyncHandler(async (req, res) => {
+  const academicYears = await AcademicYear.find()
+  res.status(201).json({
+    status: 'sucess',
+    message: 'Academic year fetched successfully',
+    data: academicYears,
+  })
+})
