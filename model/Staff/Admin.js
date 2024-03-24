@@ -25,6 +25,12 @@ const adminSchema = new mongoose.Schema(
         ref: 'AcademicTerm',
       },
     ],
+    yearGroups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'YearGroup',
+      },
+    ],
     academicYear: [
       {
         type: mongoose.Schema.Types.ObjectId,
