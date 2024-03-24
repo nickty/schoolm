@@ -1,6 +1,7 @@
 const express = require('express')
 const {
   adminRegisterTeacherController,
+  loginTeacherController,
 } = require('../../controller/staff/teacherController')
 const isLogin = require('../../middlewares/isLoggedIn')
 const isAdmin = require('../../middlewares/isAdmin')
@@ -13,5 +14,6 @@ teacherRouter.post(
   isAdmin,
   adminRegisterTeacherController
 )
+teacherRouter.post('/login', loginTeacherController)
 
 module.exports = teacherRouter
