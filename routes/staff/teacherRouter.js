@@ -5,6 +5,7 @@ const {
   getAllTeacherController,
   getSingleTeacherController,
   getTeacherProfile,
+  updateTeacherController,
 } = require('../../controller/staff/teacherController')
 const isLogin = require('../../middlewares/isLoggedIn')
 const isAdmin = require('../../middlewares/isAdmin')
@@ -23,6 +24,12 @@ teacherRouter.post('/login', loginTeacherController)
 teacherRouter.get('/admin', isLogin, isAdmin, getAllTeacherController)
 
 teacherRouter.get('/profile', isTeacherLoggedIn, isTeacher, getTeacherProfile)
+teacherRouter.put(
+  '/:teacherID/update',
+  isTeacherLoggedIn,
+  isTeacher,
+  updateTeacherController
+)
 teacherRouter.get(
   '/:teacherID/admin',
   isLogin,
