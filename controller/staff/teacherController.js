@@ -51,3 +51,18 @@ exports.getAllTeacherController = AsyncHandler(async (req, res) => {
     data: teachers,
   })
 })
+
+exports.getSingleTeacherController = AsyncHandler(async (req, res) => {
+  const teacherID = req.params.teacherID
+
+  const teacher = await Teacher.findById(teacherID)
+  if (!teacher) {
+    throw new Error('teacher not found')
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: teacher,
+      message: 'teacher profile fetched successfully',
+    })
+  }
+})
