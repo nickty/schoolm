@@ -11,6 +11,7 @@ const classLevelRouter = require('../routes/academics/classLevel')
 const programRoute = require('../routes/academics/program')
 const subjectRoute = require('../routes/academics/subject')
 const yearGroupRoute = require('../routes/academics/yearGroup')
+const teacherRouter = require('../routes/staff/teacherRouter')
 
 const app = express()
 
@@ -27,6 +28,7 @@ app.use('/api/v1/class-levels', classLevelRouter)
 app.use('/api/v1/programs', programRoute)
 app.use('/api/v1/subjects', subjectRoute)
 app.use('/api/v1/year-groups', yearGroupRoute)
+app.use('/api/v1/teachers', teacherRouter)
 
 // Error
 app.use(notFoundErr)

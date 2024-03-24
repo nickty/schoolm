@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 
 const { Schema } = mongoose
 
@@ -32,7 +33,7 @@ const teacherSchema = new Schema(
             .split(' ')
             .map((name) => name[0])
             .join('')
-            .toUppercase()
+            .toUpperCase()
         )
       },
     },
@@ -51,7 +52,6 @@ const teacherSchema = new Schema(
     subject: {
       type: Schema.Types.ObjectId,
       ref: 'Course',
-      required: true,
     },
     applicationStatus: {
       type: String,
@@ -61,17 +61,14 @@ const teacherSchema = new Schema(
     program: {
       type: Schema.Types.ObjectId,
       ref: 'Program',
-      required: true,
     },
     classLevel: {
       type: Schema.Types.ObjectId,
       ref: 'ClassLevel',
-      required: true,
     },
     academicYear: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicYear',
-      required: true,
     },
     examsCreated: [
       {
@@ -82,16 +79,37 @@ const teacherSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'Admin',
-      required: true,
     },
     academicTerm: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicTerm',
-      required: true,
     },
   },
   { timestamps: true }
 )
+
+// hash password
+teacherSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    // If password is not modified, move to the next middleware
+    return next()
+  }
+
+  try {
+    // Generate salt
+    const salt = await bcrypt.genSalt(10)
+    // Hash the password with the generated salt
+    this.password = await bcrypt.hash(this.password, salt)
+    next() // Move to the next middleware
+  } catch (error) {
+    next(error) // Pass any error to the next middleware
+  }
+})
+
+// verify password
+teacherSchema.methods.verifyPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
 
 const Teacher = mongoose.model('Teacher', teacherSchema)
 
