@@ -4,9 +4,12 @@ const {
   loginTeacherController,
   getAllTeacherController,
   getSingleTeacherController,
+  getTeacherProfile,
 } = require('../../controller/staff/teacherController')
 const isLogin = require('../../middlewares/isLoggedIn')
 const isAdmin = require('../../middlewares/isAdmin')
+const isTeacher = require('../../middlewares/isTeacher')
+const isTeacherLoggedIn = require('../../middlewares/isTeacherLoggedIn')
 
 const teacherRouter = express.Router()
 
@@ -18,6 +21,8 @@ teacherRouter.post(
 )
 teacherRouter.post('/login', loginTeacherController)
 teacherRouter.get('/admin', isLogin, isAdmin, getAllTeacherController)
+
+teacherRouter.get('/profile', isTeacherLoggedIn, isTeacher, getTeacherProfile)
 teacherRouter.get(
   '/:teacherID/admin',
   isLogin,

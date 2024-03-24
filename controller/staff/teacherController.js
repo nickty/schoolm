@@ -66,3 +66,16 @@ exports.getSingleTeacherController = AsyncHandler(async (req, res) => {
     })
   }
 })
+
+exports.getTeacherProfile = AsyncHandler(async (req, res) => {
+  const teacher = await Teacher.findById(req.userAuth?._id).select('-password')
+  if (!teacher) {
+    throw new Error('teacher not found')
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: teacher,
+      message: 'Teacher profile fetched successfully',
+    })
+  }
+})
