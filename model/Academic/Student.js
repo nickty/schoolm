@@ -32,7 +32,7 @@ const studentSchema = new Schema(
             .split(' ')
             .map((name) => name[0])
             .join('')
-            .toUppercase()
+            .toUpperCase()
         )
       },
     },
