@@ -41,3 +41,13 @@ exports.loginTeacherController = AsyncHandler(async (req, res) => {
     return res.json({ message: 'Invalid login credentials' })
   }
 })
+
+exports.getAllTeacherController = AsyncHandler(async (req, res) => {
+  console.log('first')
+  const teachers = await Teacher.find()
+  res.status(200).json({
+    status: 'success',
+    message: 'Teachers fetched successfully',
+    data: teachers,
+  })
+})
