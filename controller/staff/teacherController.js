@@ -115,3 +115,62 @@ exports.updateTeacherController = AsyncHandler(async (req, res) => {
     })
   }
 })
+
+// admin update teacher
+exports.adminUpdateTeacherController = AsyncHandler(async (req, res) => {
+  const { program, classLevel, academicYear, subject } = req.body
+
+  let teacherFound = await Teacher.findById(req.params.teacherID)
+
+  if (!teacherFound) {
+    return res
+      .status(404)
+      .json({ status: 'error', message: 'Teacher not found' })
+  }
+
+  // check teacher status
+  if (teacherFound.isWithrawn) {
+    throw new Error('Teacher is withdrawn')
+  }
+
+  if (program) {
+    teacherFound.program = program
+    await teacherFound.save()
+
+    res.status(200).json({
+      status: 'success',
+      data: teacherFound,
+      message: 'Teacher updated successfully',
+    })
+  }
+  if (classLevel) {
+    teacherFound.classLevel = classLevel
+    await teacherFound.save()
+
+    res.status(200).json({
+      status: 'success',
+      data: teacherFound,
+      message: 'Teacher updated successfully',
+    })
+  }
+  if (academicYear) {
+    teacherFound.academicYear = academicYear
+    await teacherFound.save()
+
+    res.status(200).json({
+      status: 'success',
+      data: teacherFound,
+      message: 'Teacher updated successfully',
+    })
+  }
+  if (subject) {
+    teacherFound.subject = subject
+    await teacherFound.save()
+
+    res.status(200).json({
+      status: 'success',
+      data: teacherFound,
+      message: 'Teacher updated successfully',
+    })
+  }
+})

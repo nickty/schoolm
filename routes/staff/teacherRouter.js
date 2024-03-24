@@ -6,6 +6,7 @@ const {
   getSingleTeacherController,
   getTeacherProfile,
   updateTeacherController,
+  adminUpdateTeacherController,
 } = require('../../controller/staff/teacherController')
 const isLogin = require('../../middlewares/isLoggedIn')
 const isAdmin = require('../../middlewares/isAdmin')
@@ -29,6 +30,12 @@ teacherRouter.put(
   isTeacherLoggedIn,
   isTeacher,
   updateTeacherController
+)
+teacherRouter.put(
+  '/:teacherID/update/admin',
+  isLogin,
+  isAdmin,
+  adminUpdateTeacherController
 )
 teacherRouter.get(
   '/:teacherID/admin',
