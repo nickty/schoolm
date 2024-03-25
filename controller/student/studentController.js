@@ -2,7 +2,7 @@ const AsyncHandler = require('express-async-handler')
 const Student = require('../../model/Academic/Student')
 const generateToken = require('../../utils/generateToken')
 
-// register teacher
+// register student
 exports.adminRegisterStudentController = AsyncHandler(async (req, res) => {
   const { name, email, password } = req.body
   console.log('check', name, email, password)
@@ -76,6 +76,42 @@ exports.getSingleStudentController = AsyncHandler(async (req, res) => {
       status: 'success',
       data: student,
       message: 'Student profile fetched successfully',
+    })
+  }
+})
+
+exports.updateStudentController = AsyncHandler(async (req, res) => {
+  const { email, password } = req.body
+  let studentFound = await Student.findById(req.userAuth._id)
+
+  if (!studentFound) {
+    return res
+      .status(404)
+      .json({ status: 'error', message: 'Student not found' })
+  }
+
+  // Check if the new email belongs to another user
+  const emailExist = await Student.findOne({
+    email: email,
+    _id: { $ne: req.userAuth._id },
+  })
+  if (emailExist) {
+    throw new Error('This email is taken/exist')
+  } else {
+    // Set the new values on the found document
+    // if (name) studentFound.name = name
+    if (email) studentFound.email = email
+    if (password) studentFound.password = password // This will be hashed in the pre-save middleware
+
+    const updatedStudent = await studentFound.save() // This triggers pre-save hooks
+
+    // Optionally, you might want to omit the password from the response
+    updatedStudent.password = undefined
+
+    res.status(200).json({
+      status: 'success',
+      data: updatedStudent,
+      message: 'Student updated successfully',
     })
   }
 })
