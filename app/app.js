@@ -13,6 +13,7 @@ const subjectRoute = require('../routes/academics/subject')
 const yearGroupRoute = require('../routes/academics/yearGroup')
 const teacherRouter = require('../routes/staff/teacherRouter')
 const examRoute = require('../routes/academics/exam')
+const studentRouter = require('../routes/staff/studentRouter')
 
 const app = express()
 
@@ -31,6 +32,7 @@ app.use('/api/v1/subjects', subjectRoute)
 app.use('/api/v1/year-groups', yearGroupRoute)
 app.use('/api/v1/teachers', teacherRouter)
 app.use('/api/v1/exams', examRoute)
+app.use('/api/v1/students', studentRouter)
 
 // Error
 app.use(notFoundErr)

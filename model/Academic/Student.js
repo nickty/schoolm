@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 
 const { Schema } = mongoose
 
@@ -44,18 +45,16 @@ const studentSchema = new Schema(
     classLevels: {
       type: Schema.Types.ObjectId,
       ref: 'ClassLevel',
-      required: true,
     },
     currentClassLevel: {
       type: String,
-      default: function () {
-        return this.classLevel[this.classLevels.length - 1]
-      },
+      // default: function () {
+      //   return this.classLevel[this.classLevels.length - 1]
+      // },
     },
     academicYear: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicYear',
-      required: true,
     },
     dateAdmitted: {
       type: Date,
@@ -70,7 +69,6 @@ const studentSchema = new Schema(
     program: {
       type: Schema.Types.ObjectId,
       ref: 'Program',
-      required: true,
     },
     isPromottedToLevel200: {
       type: Boolean,
@@ -105,6 +103,29 @@ const studentSchema = new Schema(
   },
   { timestamps: true }
 )
+
+// hash password
+studentSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    // If password is not modified, move to the next middleware
+    return next()
+  }
+
+  try {
+    // Generate salt
+    const salt = await bcrypt.genSalt(10)
+    // Hash the password with the generated salt
+    this.password = await bcrypt.hash(this.password, salt)
+    next() // Move to the next middleware
+  } catch (error) {
+    next(error) // Pass any error to the next middleware
+  }
+})
+
+// verify password
+studentSchema.methods.verifyPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
 
 const Student = mongoose.model('Student', studentSchema)
 
