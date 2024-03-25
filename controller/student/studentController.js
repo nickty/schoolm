@@ -22,3 +22,23 @@ exports.adminRegisterStudentController = AsyncHandler(async (req, res) => {
     message: 'Student registered sucessfully',
   })
 })
+
+// login
+exports.loginStudentController = AsyncHandler(async (req, res) => {
+  const { email, password } = req.body
+
+  // find user
+  const user = await Student.findOne({ email })
+  if (!user) {
+    return res.json({ message: 'Invalid login credentials' })
+  }
+  if (user && (await user.verifyPassword(password))) {
+    return res.json({
+      status: 'success',
+      data: generateToken(user?._id),
+      message: 'Student logged in successfully',
+    })
+  } else {
+    return res.json({ message: 'Invalid login credentials' })
+  }
+})

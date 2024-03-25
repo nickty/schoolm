@@ -4,6 +4,7 @@ const isLogin = require('../../middlewares/isLoggedIn')
 const isAdmin = require('../../middlewares/isAdmin')
 const {
   adminRegisterStudentController,
+  loginStudentController,
 } = require('../../controller/student/studentController')
 
 const studentRouter = express.Router()
@@ -14,5 +15,6 @@ studentRouter.post(
   isAdmin,
   adminRegisterStudentController
 )
+studentRouter.post('/login', loginStudentController)
 
 module.exports = studentRouter
