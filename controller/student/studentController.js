@@ -55,3 +55,12 @@ exports.getStudnetProfile = AsyncHandler(async (req, res) => {
     })
   }
 })
+
+exports.getAllStudentController = AsyncHandler(async (req, res) => {
+  const students = await Student.find()
+  res.status(200).json({
+    status: 'success',
+    message: 'Student fetched successfully',
+    data: students,
+  })
+})
