@@ -43,7 +43,6 @@ exports.loginTeacherController = AsyncHandler(async (req, res) => {
 })
 
 exports.getAllTeacherController = AsyncHandler(async (req, res) => {
-  console.log('first')
   const teachers = await Teacher.find()
   res.status(200).json({
     status: 'success',

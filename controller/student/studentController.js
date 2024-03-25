@@ -42,3 +42,16 @@ exports.loginStudentController = AsyncHandler(async (req, res) => {
     return res.json({ message: 'Invalid login credentials' })
   }
 })
+
+exports.getStudnetProfile = AsyncHandler(async (req, res) => {
+  const student = await Student.findById(req.userAuth?._id).select('-password')
+  if (!student) {
+    throw new Error('student not found')
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: student,
+      message: 'student profile fetched successfully',
+    })
+  }
+})
