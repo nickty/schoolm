@@ -64,3 +64,18 @@ exports.getAllStudentController = AsyncHandler(async (req, res) => {
     data: students,
   })
 })
+
+exports.getSingleStudentController = AsyncHandler(async (req, res) => {
+  const studentid = req.params.studentID
+
+  const student = await Student.findById(studentid).select('-password')
+  if (!student) {
+    throw new Error('student not found')
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: student,
+      message: 'Student profile fetched successfully',
+    })
+  }
+})

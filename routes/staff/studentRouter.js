@@ -7,6 +7,7 @@ const {
   loginStudentController,
   getStudnetProfile,
   getAllStudentController,
+  getSingleStudentController,
 } = require('../../controller/student/studentController')
 const isStudentLoggedIn = require('../../middlewares/isStudentLoggedIn')
 const isStudent = require('../../middlewares/isStudent')
@@ -22,5 +23,11 @@ studentRouter.post(
 studentRouter.post('/login', loginStudentController)
 studentRouter.get('/profile', isStudentLoggedIn, isStudent, getStudnetProfile)
 studentRouter.get('/profiles', isLogin, isAdmin, getAllStudentController)
+studentRouter.get(
+  '/:studentID/admin',
+  isLogin,
+  isAdmin,
+  getSingleStudentController
+)
 
 module.exports = studentRouter
