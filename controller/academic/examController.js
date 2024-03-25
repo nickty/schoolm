@@ -53,3 +53,13 @@ exports.createExamController = AsyncHandler(async (req, res) => {
     message: 'Exam created sucessfully',
   })
 })
+
+// get all
+exports.getExams = AsyncHandler(async (req, res) => {
+  const exams = await Exam.find()
+  res.status(201).json({
+    status: 'success',
+    message: 'Exams fetched successfully',
+    data: exams,
+  })
+})
