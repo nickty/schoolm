@@ -9,6 +9,7 @@ const {
   getAllStudentController,
   getSingleStudentController,
   updateStudentController,
+  adminUpdateStudentController,
 } = require('../../controller/student/studentController')
 const isStudentLoggedIn = require('../../middlewares/isStudentLoggedIn')
 const isStudent = require('../../middlewares/isStudent')
@@ -35,6 +36,12 @@ studentRouter.put(
   isStudentLoggedIn,
   isStudent,
   updateStudentController
+)
+studentRouter.put(
+  '/:studentID/update/admin',
+  isLogin,
+  isAdmin,
+  adminUpdateStudentController
 )
 
 module.exports = studentRouter

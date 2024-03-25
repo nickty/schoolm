@@ -69,6 +69,7 @@ exports.getSingleStudentController = AsyncHandler(async (req, res) => {
   const studentid = req.params.studentID
 
   const student = await Student.findById(studentid).select('-password')
+
   if (!student) {
     throw new Error('student not found')
   } else {
@@ -114,4 +115,48 @@ exports.updateStudentController = AsyncHandler(async (req, res) => {
       message: 'Student updated successfully',
     })
   }
+})
+
+// admin update student
+exports.adminUpdateStudentController = AsyncHandler(async (req, res) => {
+  const { classLevel, academicYear, program, name, email, prefectName } =
+    req.body
+
+  let studentFound = await Student.findById(req.params.studentID)
+
+  if (!studentFound) {
+    return res
+      .status(404)
+      .json({ status: 'error', message: 'Student not found' })
+  }
+
+  // check teacher status
+  if (studentFound.isWithrawn) {
+    throw new Error('Student is withdrawn')
+  }
+
+  const studentUpdated = await Student.findByIdAndDelete(
+    req.params.studentID,
+    {
+      $set: {
+        name,
+        email,
+        academicYear,
+        program,
+        prefectName,
+      },
+      $addToSet: {
+        classLevel,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+
+  res.status(200).json({
+    status: 'success',
+    data: studentUpdated,
+    message: 'Student updated successfully',
+  })
 })

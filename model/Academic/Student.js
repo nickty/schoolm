@@ -41,16 +41,17 @@ const studentSchema = new Schema(
       type: String,
       default: 'student',
     },
-
-    classLevels: {
-      type: Schema.Types.ObjectId,
-      ref: 'ClassLevel',
-    },
+    classLevels: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'ClassLevel',
+      },
+    ],
     currentClassLevel: {
       type: String,
-      // default: function () {
-      //   return this.classLevel[this.classLevels.length - 1]
-      // },
+      default: function () {
+        return this.classLevels[this.classLevels.length - 1]
+      },
     },
     academicYear: {
       type: Schema.Types.ObjectId,
