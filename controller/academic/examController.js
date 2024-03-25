@@ -63,3 +63,13 @@ exports.getExams = AsyncHandler(async (req, res) => {
     data: exams,
   })
 })
+
+// get single
+exports.getExam = AsyncHandler(async (req, res) => {
+  const exam = await Exam.findById(req.params.id)
+  res.status(201).json({
+    status: 'success',
+    message: 'Exam fetched successfully',
+    data: exam,
+  })
+})

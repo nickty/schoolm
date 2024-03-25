@@ -4,6 +4,7 @@ const isAdmin = require('../../middlewares/isAdmin')
 const {
   createExamController,
   getExams,
+  getExam,
 } = require('../../controller/academic/examController')
 const isTeacherLoggedIn = require('../../middlewares/isTeacherLoggedIn')
 const isTeacher = require('../../middlewares/isTeacher')
@@ -12,6 +13,7 @@ const examRoute = express.Router()
 
 examRoute.post('/', isTeacherLoggedIn, isTeacher, createExamController)
 examRoute.get('/', getExams)
+examRoute.get('/:id', getExam)
 // examRoute.get('/:id', isLogin, isAdmin, getYearGroup)
 // examRoute.put('/:id', isLogin, isAdmin, updateYearGroup)
 // examRoute.delete('/:id', isLogin, isAdmin, yearGroupDelete)
