@@ -49,6 +49,10 @@ const examSchema = new Schema(
       type: String,
       required: true,
     },
+    examType: {
+      type: String,
+      required: true,
+    },
     examStatus: {
       type: String,
       required: true,
