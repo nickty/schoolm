@@ -10,6 +10,11 @@ exports.createQuestionController = AsyncHandler(async (req, res) => {
   if (!exam) {
     throw new Error('Exam not exist')
   }
+  // check if question exist
+  const questionExist = await Question.findOne({ question })
+  if (questionExist) {
+    throw new Error('Question already exist')
+  }
   //   create
   const questionCreated = await Question.create({
     question,
