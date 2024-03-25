@@ -34,3 +34,13 @@ exports.createQuestionController = AsyncHandler(async (req, res) => {
     data: questionCreated,
   })
 })
+
+// get all
+exports.getQuestionsController = AsyncHandler(async (req, res) => {
+  const questions = await Question.find()
+  res.status(201).json({
+    status: 'sucess',
+    message: 'Question fetched successfully',
+    data: questions,
+  })
+})

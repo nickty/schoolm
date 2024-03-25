@@ -5,6 +5,7 @@ const isTeacherLoggedIn = require('../../middlewares/isTeacherLoggedIn')
 const isTeacher = require('../../middlewares/isTeacher')
 const {
   createQuestionController,
+  getQuestionsController,
 } = require('../../controller/academic/questionsController')
 
 const questionRoute = express.Router()
@@ -15,7 +16,7 @@ questionRoute.post(
   isTeacher,
   createQuestionController
 )
-// questionRoute.get('/', getYearGroups)
+questionRoute.get('/', isTeacherLoggedIn, isTeacher, getQuestionsController)
 // questionRoute.get('/:id', isLogin, isAdmin, getYearGroup)
 // questionRoute.put('/:id', isLogin, isAdmin, updateYearGroup)
 // questionRoute.delete('/:id', isLogin, isAdmin, yearGroupDelete)
