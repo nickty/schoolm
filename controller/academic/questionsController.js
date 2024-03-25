@@ -44,3 +44,13 @@ exports.getQuestionsController = AsyncHandler(async (req, res) => {
     data: questions,
   })
 })
+
+// get single
+exports.getQuestion = AsyncHandler(async (req, res) => {
+  const question = await Question.findById(req.params.id)
+  res.status(201).json({
+    status: 'sucess',
+    message: 'Question fetched successfully',
+    data: question,
+  })
+})
