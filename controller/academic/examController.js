@@ -73,3 +73,46 @@ exports.getExam = AsyncHandler(async (req, res) => {
     data: exam,
   })
 })
+
+// update
+exports.updateExam = AsyncHandler(async (req, res) => {
+  const {
+    name,
+    description,
+    subject,
+    program,
+    academicTerm,
+    classLevel,
+    duraion,
+    examDate,
+    examTime,
+    academicYear,
+    examType,
+  } = req.body
+  const examFound = await Exam.findOne({ name })
+  if (examFound) {
+    throw new Error('Academic year already exist')
+  }
+  const exam = await Exam.findByIdAndUpdate(
+    req.params.id,
+    {
+      name,
+      description,
+      subject,
+      program,
+      academicTerm,
+      classLevel,
+      duraion,
+      examDate,
+      examTime,
+      academicYear,
+      examType,
+    },
+    { new: true }
+  )
+  res.status(201).json({
+    status: 'success',
+    message: 'Exam updated successfully',
+    data: exam,
+  })
+})

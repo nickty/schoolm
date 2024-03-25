@@ -47,7 +47,7 @@ exports.getAcademicYear = AsyncHandler(async (req, res) => {
   })
 })
 
-// get single
+// update
 exports.updateAcademicYear = AsyncHandler(async (req, res) => {
   const { name, fromYear, toYear } = req.body
   const academicYearFound = await AcademicYear.findOne({ name })
