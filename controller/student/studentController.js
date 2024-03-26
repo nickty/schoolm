@@ -1,6 +1,7 @@
 const AsyncHandler = require('express-async-handler')
 const Student = require('../../model/Academic/Student')
 const generateToken = require('../../utils/generateToken')
+const Exam = require('../../model/Academic/Exam')
 
 // register student
 exports.adminRegisterStudentController = AsyncHandler(async (req, res) => {
@@ -158,5 +159,36 @@ exports.adminUpdateStudentController = AsyncHandler(async (req, res) => {
     status: 'success',
     data: studentUpdated,
     message: 'Student updated successfully',
+  })
+})
+
+// student taking exam
+exports.writeExamController = AsyncHandler(async (req, res) => {
+  // student
+  const studentFound = await Student.findById(req.userAuth._id)
+
+  if (!studentFound) {
+    return res
+      .status(404)
+      .json({ status: 'error', message: 'Student not found' })
+  }
+
+  //get exam
+  const examFound = await Exam.findById(req.params.examID).populate('questions')
+
+  if (!examFound) {
+    return res.status(404).json({ status: 'error', message: 'Exam not found' })
+  }
+
+  // get questions
+  const questions = examFound?.questions
+  // get students questions
+  const answers = req.body.answers
+
+  res.status(200).json({
+    status: 'success',
+    questions,
+    data: answers,
+    message: 'Answers fetch successfully',
   })
 })

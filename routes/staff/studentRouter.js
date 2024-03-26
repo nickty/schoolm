@@ -10,6 +10,7 @@ const {
   getSingleStudentController,
   updateStudentController,
   adminUpdateStudentController,
+  writeExamController,
 } = require('../../controller/student/studentController')
 const isStudentLoggedIn = require('../../middlewares/isStudentLoggedIn')
 const isStudent = require('../../middlewares/isStudent')
@@ -36,6 +37,12 @@ studentRouter.put(
   isStudentLoggedIn,
   isStudent,
   updateStudentController
+)
+studentRouter.post(
+  '/exam/:examID/write',
+  isStudentLoggedIn,
+  isStudent,
+  writeExamController
 )
 studentRouter.put(
   '/:studentID/update/admin',
