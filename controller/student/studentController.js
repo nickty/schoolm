@@ -121,8 +121,16 @@ exports.updateStudentController = AsyncHandler(async (req, res) => {
 
 // admin update student
 exports.adminUpdateStudentController = AsyncHandler(async (req, res) => {
-  const { classLevels, academicYear, program, name, email, prefectName } =
-    req.body
+  const {
+    classLevels,
+    academicYear,
+    program,
+    name,
+    email,
+    prefectName,
+    isSuspended,
+    isWithrawn,
+  } = req.body
 
   let studentFound = await Student.findById(req.params.studentID)
 
@@ -146,6 +154,8 @@ exports.adminUpdateStudentController = AsyncHandler(async (req, res) => {
         academicYear,
         program,
         prefectName,
+        isSuspended,
+        isWithrawn,
       },
       $addToSet: {
         classLevels,
@@ -199,6 +209,11 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   })
   if (studentFoundInResult) {
     throw new Error('You have alredy participated in this exam')
+  }
+
+  // check if student is suspended/withdrawn
+  if (studentFound.isWithrawn || studentFound.isSuspended) {
+    throw new Error('You may be suspended or withdrawn')
   }
 
   // build report object
