@@ -121,7 +121,7 @@ exports.updateStudentController = AsyncHandler(async (req, res) => {
 
 // admin update student
 exports.adminUpdateStudentController = AsyncHandler(async (req, res) => {
-  const { classLevel, academicYear, program, name, email, prefectName } =
+  const { classLevels, academicYear, program, name, email, prefectName } =
     req.body
 
   let studentFound = await Student.findById(req.params.studentID)
@@ -137,7 +137,7 @@ exports.adminUpdateStudentController = AsyncHandler(async (req, res) => {
     throw new Error('Student is withdrawn')
   }
 
-  const studentUpdated = await Student.findByIdAndDelete(
+  const studentUpdated = await Student.findByIdAndUpdate(
     req.params.studentID,
     {
       $set: {
@@ -148,7 +148,7 @@ exports.adminUpdateStudentController = AsyncHandler(async (req, res) => {
         prefectName,
       },
       $addToSet: {
-        classLevel,
+        classLevels,
       },
     },
     {
