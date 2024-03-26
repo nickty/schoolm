@@ -298,7 +298,8 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
     status === 'pass' &&
     studentFound?.currentClassLevel === 'Level 300'
   ) {
-    studentFound.classLevels.push('Level 400')
+    studentFound.isGraduated = true
+    studentFound.yearGraduated = new Date.now()
     studentFound.currentClassLevel = 'Level 400'
     await studentFound.save()
   }
