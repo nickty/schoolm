@@ -183,12 +183,57 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   // get questions
   const questions = examFound?.questions
   // get students questions
-  const answers = req.body.answers
+  const studentAnswers = req.body.answers
 
+  // check if answers all the questions
+  if (studentAnswers.length !== questions.length) {
+    throw new Error('You have not answered all the questions')
+  }
+
+  // build report object
+  let correctAnswers = 0
+  let wrongAnswers = 0
+  let totalQuestions = 0
+  let status = ''
+  let grade = 0
+  let score = 0
+  let answeredQuestions = 0
+
+  // check for answers
+  for (let i = 0; i < questions.length; i++) {
+    // find the question
+    const question = questions[i]
+    //  check if the anwer is correct
+    if (question.correctAnswer === studentAnswers[i]) {
+      correctAnswers++
+      score++
+      question.isCorrent = true
+    } else {
+      wrongAnswers++
+    }
+  }
+  // calculae total questions
+  grade = (correctAnswers / questions.length) * 100
+  answeredQuestions = questions.map((q) => {
+    return {
+      question: q.question,
+      correctAnswer: q.correctAnswer,
+      isCorrent: q.isCorrent,
+    }
+  })
+
+  if (grade >= 50) {
+    status = 'Passed'
+  } else {
+    status = 'Failed'
+  }
   res.status(200).json({
     status: 'success',
-    questions,
-    data: answers,
-    message: 'Answers fetch successfully',
+    correctAnswers,
+    wrongAnswers,
+    score,
+    grade,
+    answeredQuestions,
+    status,
   })
 })
