@@ -2,6 +2,7 @@ const AsyncHandler = require('express-async-handler')
 const Student = require('../../model/Academic/Student')
 const generateToken = require('../../utils/generateToken')
 const Exam = require('../../model/Academic/Exam')
+const ExamResult = require('../../model/Academic/ExamResults')
 
 // register student
 exports.adminRegisterStudentController = AsyncHandler(async (req, res) => {
@@ -226,9 +227,9 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   // check if pass or fail
 
   if (grade >= 50) {
-    status = 'Passed'
+    status = 'Pass'
   } else {
-    status = 'Failed'
+    status = 'Fail'
   }
 
   // remark
@@ -243,6 +244,24 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   } else {
     remark = 'Poor'
   }
+
+  // generate exam result
+
+  const examResult = await ExamResult.create({
+    student: studentFound?._id,
+    exam: examFound?._id,
+    grade,
+    score,
+    status,
+    remark,
+    classLevel: examFound?.classLevel,
+    academicTerm: examFound?.academicTerm,
+    academicYear: examFound?.academicYear,
+  })
+  // push the result
+  studentFound.examResults.push(examResult?._id)
+  await studentFound.save()
+
   res.status(200).json({
     status: 'success',
     correctAnswers,

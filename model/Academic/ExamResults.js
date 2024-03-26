@@ -30,22 +30,14 @@ const examResultSchema = new Schema(
     status: {
       type: String,
       required: true,
-      enum: ['failed', 'pass'],
-      default: 'failed',
+      enum: ['Pass', 'Fail'],
+      default: 'Fail',
     },
     remarks: {
       type: String,
       required: true,
       enum: ['Excellent', 'Good', 'Poor'],
       default: 'Poor',
-    },
-    position: {
-      type: Number,
-      required: true,
-    },
-    subject: {
-      type: Schema.Types.ObjectId,
-      ref: 'Subject',
     },
     classLevel: {
       type: Schema.Types.ObjectId,
