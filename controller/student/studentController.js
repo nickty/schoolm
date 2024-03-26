@@ -191,6 +191,14 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
     throw new Error('You have not answered all the questions')
   }
 
+  // check if studnet has alredy taken the exam
+  const studentFoundInResult = await ExamResult.findOne({
+    student: studentFound?._id,
+  })
+  if (studentFoundInResult) {
+    throw new Error('You have alredy participated in this exam')
+  }
+
   // build report object
   let correctAnswers = 0
   let wrongAnswers = 0
