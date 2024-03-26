@@ -175,7 +175,9 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   }
 
   //get exam
-  const examFound = await Exam.findById(req.params.examID).populate('questions')
+  const examFound = await Exam.findById(req.params.examID)
+    .populate('questions')
+    .populate('academicTerm')
 
   if (!examFound) {
     return res.status(404).json({ status: 'error', message: 'Exam not found' })
@@ -255,20 +257,51 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
 
   // generate exam result
 
-  const examResult = await ExamResult.create({
-    student: studentFound?._id,
-    exam: examFound?._id,
-    grade,
-    score,
-    status,
-    remark,
-    classLevel: examFound?.classLevel,
-    academicTerm: examFound?.academicTerm,
-    academicYear: examFound?.academicYear,
-  })
+  // const examResult = await ExamResult.create({
+  //   student: studentFound?._id,
+  //   exam: examFound?._id,
+  //   grade,
+  //   score,
+  //   status,
+  //   remark,
+  //   classLevel: examFound?.classLevel,
+  //   academicTerm: examFound?.academicTerm,
+  //   academicYear: examFound?.academicYear,
+  // })
   // push the result
-  studentFound.examResults.push(examResult?._id)
-  await studentFound.save()
+  // studentFound.examResults.push(examResult?._id)
+  // await studentFound.save()
+
+  // promoting students
+  if (
+    examFound.academicTerm.name === '3rd term' &&
+    status === 'pass' &&
+    studentFound?.currentClassLevel === 'Level 100'
+  ) {
+    studentFound.classLevels.push('Level 200')
+    studentFound.currentClassLevel = 'Level 200'
+    await studentFound.save()
+  }
+  // promoting students from 200 to 300
+  if (
+    examFound.academicTerm.name === '3rd term' &&
+    status === 'pass' &&
+    studentFound?.currentClassLevel === 'Level 200'
+  ) {
+    studentFound.classLevels.push('Level 300')
+    studentFound.currentClassLevel = 'Level 300'
+    await studentFound.save()
+  }
+  // promoting students from 300 to 400
+  if (
+    examFound.academicTerm.name === '3rd term' &&
+    status === 'pass' &&
+    studentFound?.currentClassLevel === 'Level 300'
+  ) {
+    studentFound.classLevels.push('Level 400')
+    studentFound.currentClassLevel = 'Level 400'
+    await studentFound.save()
+  }
 
   res.status(200).json({
     status: 'success',

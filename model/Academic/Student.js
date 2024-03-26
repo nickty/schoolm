@@ -98,7 +98,7 @@ const studentSchema = new Schema(
       type: String,
     },
     yearGraduated: {
-      type: String,
+      type: Date,
     },
   },
   { timestamps: true }
