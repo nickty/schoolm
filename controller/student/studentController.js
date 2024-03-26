@@ -272,20 +272,20 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
 
   // generate exam result
 
-  // const examResult = await ExamResult.create({
-  //   student: studentFound?._id,
-  //   exam: examFound?._id,
-  //   grade,
-  //   score,
-  //   status,
-  //   remark,
-  //   classLevel: examFound?.classLevel,
-  //   academicTerm: examFound?.academicTerm,
-  //   academicYear: examFound?.academicYear,
-  // })
+  const examResult = await ExamResult.create({
+    student: studentFound?._id,
+    exam: examFound?._id,
+    grade,
+    score,
+    status,
+    remark,
+    classLevel: examFound?.classLevel,
+    academicTerm: examFound?.academicTerm,
+    academicYear: examFound?.academicYear,
+  })
   // push the result
-  // studentFound.examResults.push(examResult?._id)
-  // await studentFound.save()
+  studentFound.examResults.push(examResult?._id)
+  await studentFound.save()
 
   // promoting students
   if (
