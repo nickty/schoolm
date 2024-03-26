@@ -43,7 +43,11 @@ exports.loginTeacherController = AsyncHandler(async (req, res) => {
 })
 
 exports.getAllTeacherController = AsyncHandler(async (req, res) => {
+  let TeachersQuery = Teacher.find()
   // query string
+
+  // filter
+
   // convert query string
   const page = Number(req.query.page) || 1
   const limit = Number(req.query.limit) || 2
@@ -54,6 +58,12 @@ exports.getAllTeacherController = AsyncHandler(async (req, res) => {
 
   // get total records
   const total = await Teacher.countDocuments()
+
+  if (req.query.name) {
+    TeachersQuery = TeachersQuery.find({
+      name: { $regex: req.query.name, $options: 'i' },
+    })
+  }
 
   // pagination result
   const pagination = {}
@@ -72,7 +82,8 @@ exports.getAllTeacherController = AsyncHandler(async (req, res) => {
     }
   }
 
-  const teachers = await Teacher.find().skip(skip).limit(limit)
+  const teachers = await TeachersQuery.find().skip(skip).limit(limit)
+
   res.status(200).json({
     status: 'success',
     message: 'Teachers fetched successfully',
