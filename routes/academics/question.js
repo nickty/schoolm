@@ -7,6 +7,7 @@ const {
   createQuestionController,
   getQuestionsController,
   getQuestion,
+  updateQuestionController,
 } = require('../../controller/academic/questionsController')
 
 const questionRoute = express.Router()
@@ -19,7 +20,12 @@ questionRoute.post(
 )
 questionRoute.get('/', isTeacherLoggedIn, isTeacher, getQuestionsController)
 questionRoute.get('/:id', isTeacherLoggedIn, isTeacher, getQuestion)
-// questionRoute.put('/:id', isLogin, isAdmin, updateYearGroup)
+questionRoute.put(
+  '/:id',
+  isTeacherLoggedIn,
+  isTeacher,
+  updateQuestionController
+)
 // questionRoute.delete('/:id', isLogin, isAdmin, yearGroupDelete)
 
 module.exports = questionRoute

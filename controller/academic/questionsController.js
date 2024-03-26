@@ -54,3 +54,23 @@ exports.getQuestion = AsyncHandler(async (req, res) => {
     data: question,
   })
 })
+
+// update
+exports.updateQuestionController = AsyncHandler(async (req, res) => {
+  const { question, optionA, optionB, optionC, optionD, correctAnswer } =
+    req.body
+  const questionFound = await Question.findOne({ question })
+  if (questionFound) {
+    throw new Error('Question already exist')
+  }
+  const questionUpdated = await Question.findByIdAndUpdate(
+    req.params.id,
+    { question, optionA, optionB, optionC, optionD, correctAnswer },
+    { new: true }
+  )
+  res.status(201).json({
+    status: 'success',
+    message: 'Question updated successfully',
+    data: questionUpdated,
+  })
+})
