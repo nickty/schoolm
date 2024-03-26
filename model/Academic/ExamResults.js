@@ -4,9 +4,8 @@ const { Schema } = mongoose
 
 const examResultSchema = new Schema(
   {
-    student: {
-      type: Schema.Types.ObjectId,
-      ref: 'Student',
+    studentID: {
+      type: String,
       required: true,
     },
     exam: {

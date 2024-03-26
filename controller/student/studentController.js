@@ -207,9 +207,9 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   const studentFoundInResult = await ExamResult.findOne({
     student: studentFound?._id,
   })
-  if (studentFoundInResult) {
-    throw new Error('You have alredy participated in this exam')
-  }
+  // if (studentFoundInResult) {
+  //   throw new Error('You have alredy participated in this exam')
+  // }
 
   // check if student is suspended/withdrawn
   if (studentFound.isWithrawn || studentFound.isSuspended) {
@@ -273,7 +273,7 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   // generate exam result
 
   const examResult = await ExamResult.create({
-    student: studentFound?._id,
+    studentID: studentFound?.studentId,
     exam: examFound?._id,
     grade,
     score,
