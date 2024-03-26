@@ -195,6 +195,7 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
   let wrongAnswers = 0
   let totalQuestions = 0
   let status = ''
+  let remark = ''
   let grade = 0
   let score = 0
   let answeredQuestions = 0
@@ -222,10 +223,25 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
     }
   })
 
+  // check if pass or fail
+
   if (grade >= 50) {
     status = 'Passed'
   } else {
     status = 'Failed'
+  }
+
+  // remark
+  if (grade >= 80) {
+    remark = 'Excellent'
+  } else if (grade >= 70) {
+    remark = 'Very good'
+  } else if (grade >= 60) {
+    remark = 'Good'
+  } else if (grade >= 50) {
+    remark = 'Fair'
+  } else {
+    remark = 'Poor'
   }
   res.status(200).json({
     status: 'success',
@@ -235,5 +251,6 @@ exports.writeExamController = AsyncHandler(async (req, res) => {
     grade,
     answeredQuestions,
     status,
+    remark,
   })
 })
