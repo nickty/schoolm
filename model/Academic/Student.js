@@ -43,8 +43,7 @@ const studentSchema = new Schema(
     },
     classLevels: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'ClassLevel',
+        type: String,
       },
     ],
     currentClassLevel: {
