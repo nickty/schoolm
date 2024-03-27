@@ -15,13 +15,22 @@ const {
 } = require('../../controller/staff/adminctl')
 const isLogin = require('../../middlewares/isLoggedIn')
 const isAdmin = require('../../middlewares/isAdmin')
+const isAuthenticated = require('../../middlewares/isAuth')
+const Admin = require('../../model/Staff/Admin')
+const roleRestriction = require('../../middlewares/roleRescription')
 
 const adminRouter = express.Router()
 
 adminRouter.post('/register', registerAdminController)
 adminRouter.post('/login', loginAdminController)
 adminRouter.get('/all', isLogin, getAllAdminController)
-adminRouter.get('/', isLogin, isAdmin, getSingleAdminController)
+adminRouter.get(
+  '/',
+  isAuthenticated(Admin),
+  roleRestriction('admin'),
+  isAdmin,
+  getSingleAdminController
+)
 adminRouter.put('/', isLogin, isAdmin, updateAdminController)
 adminRouter.delete('/:id', deleteAdminController)
 adminRouter.put('/suspend/teacher/:id', suspendTeacherController)
