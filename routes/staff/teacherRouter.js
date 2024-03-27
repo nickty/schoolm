@@ -12,6 +12,8 @@ const isLogin = require('../../middlewares/isLoggedIn')
 const isAdmin = require('../../middlewares/isAdmin')
 const isTeacher = require('../../middlewares/isTeacher')
 const isTeacherLoggedIn = require('../../middlewares/isTeacherLoggedIn')
+const advancedResults = require('../../middlewares/advancedResults')
+const Teacher = require('../../model/Staff/Teacher')
 
 const teacherRouter = express.Router()
 
@@ -22,7 +24,14 @@ teacherRouter.post(
   adminRegisterTeacherController
 )
 teacherRouter.post('/login', loginTeacherController)
-teacherRouter.get('/admin', isLogin, isAdmin, getAllTeacherController)
+
+teacherRouter.get(
+  '/admin',
+  isLogin,
+  isAdmin,
+  advancedResults(Teacher, 'examsCreated'),
+  getAllTeacherController
+)
 
 teacherRouter.get('/profile', isTeacherLoggedIn, isTeacher, getTeacherProfile)
 teacherRouter.put(
